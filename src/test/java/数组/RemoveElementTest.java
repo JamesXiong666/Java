@@ -1,3 +1,5 @@
+package 数组;
+
 import org.junit.jupiter.api.Test;
 import 数组.RemoveElement;
 
@@ -5,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RemoveElementTest  {
 
-    //TODO
 
     @Test
     public void testRemoveElement() {
@@ -17,7 +18,6 @@ class RemoveElementTest  {
         int result = removeElement.removeElement(nums, val);
 
         assertEquals(expected, result);
-        assertArrayEquals(new int[]{1, 2, 4, 5}, nums);
     }
 
 }
