@@ -3,7 +3,7 @@ package 栈与队列;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-//用队列实现栈
+//用队列实现栈11.17
 public class MyStack {
     Deque<Integer> que;
 

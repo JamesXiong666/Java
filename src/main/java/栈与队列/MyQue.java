@@ -2,7 +2,7 @@ package 栈与队列;
 
 import java.util.Stack;
 
-//用栈实现队列
+//用栈实现队列11.17
 public class MyQue {
     Stack<Integer> stackIn = new Stack<>();
     Stack<Integer> stackOut = new Stack<>();
