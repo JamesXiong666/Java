@@ -1,16 +1,17 @@
-package 树;
+package 树.迭代;
 
 import org.junit.jupiter.api.Test;
-import 树.递归.PreorderTraversal;
+import 树.TreeNode;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PreorderTraversalTest {
+class PostorderTraversalTest  {
+
     @Test
-    public void testPreorderTraversal() {
+    void testPostorderTraversal() {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);
         root.right = new TreeNode(3);
@@ -19,10 +20,11 @@ class PreorderTraversalTest {
         root.right.left = new TreeNode(6);
         root.right.right = new TreeNode(7);
 
-        PreorderTraversal preorderTraversal = new PreorderTraversal();
-        List<Integer> result = preorderTraversal.preorderTraversal(root);
+        PostorderTraversal postorderTraversal = new PostorderTraversal();
+        List<Integer> result = postorderTraversal.postorderTraversal(root);
 
-        assertEquals(Arrays.asList(1, 2, 4, 5, 3, 6, 7), result);
+        List<Integer> expected = Arrays.asList(4, 5, 2, 6, 7, 3, 1);
+        assertEquals(expected, result);
     }
 
 }
