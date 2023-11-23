@@ -9,33 +9,33 @@ import java.util.Queue;
 //使用双端队列
 public class IsSymmetry {
 
-    public boolean isSymmetric1(TreeNode root) {
+    public boolean isSymmetric(TreeNode root) {
         return compare(root.left, root.right);
     }
 
     public boolean compare(TreeNode left, TreeNode right) {
-        Queue<TreeNode> que = new LinkedList<>();
-        que.offer(left);
-        que.offer(right);
-        while (!que.isEmpty()) {
-            TreeNode leftnode = que.poll();
-            TreeNode rightnode = que.poll();
-            if (leftnode == null && rightnode == null) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offerFirst(left);
+        deque.offerLast(right);
+        while (!deque.isEmpty()) {
+            TreeNode leftNode = deque.pollFirst();
+            TreeNode rightNode = deque.pollLast();
+            if (leftNode == null && rightNode == null) {
                 continue;
             }
-            if (leftnode == null && rightnode != null) {
+            if (leftNode == null && rightNode != null) {
                 return false;
             }
-            if (leftnode != null && rightnode == null) {
+            if (leftNode != null && rightNode == null) {
                 return false;
             }
-            if (leftnode.val!= rightnode.val) {
+            if (leftNode.val!= rightNode.val) {
                 return false;
             }
-            que.offer(leftnode.left);
-            que.offer(rightnode.right);
-            que.offer(leftnode.right);
-            que.offer(rightnode.left);
+            deque.offerFirst(leftNode.left);
+            deque.offerFirst(rightNode.right);
+            deque.offerLast(rightNode.right);
+            deque.offerLast(leftNode.left);
         }
         return true;
     }

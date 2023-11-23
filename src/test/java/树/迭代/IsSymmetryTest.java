@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IsSymmetryTest {
     @Test
-    public void testIsSymmetric1() {
+    public void testIsSymmetric() {
         IsSymmetry isSymmetry = new IsSymmetry();
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);
@@ -17,7 +17,7 @@ class IsSymmetryTest {
         root.right.left = new TreeNode(4);
         root.right.right = new TreeNode(3);
 
-        boolean result = isSymmetry.isSymmetric1(root);
+        boolean result = isSymmetry.isSymmetric(root);
 
         assertTrue(result);
     }
@@ -33,7 +33,7 @@ class IsSymmetryTest {
         root.right.left = new TreeNode(4);
         root.right.right = new TreeNode(5);
 
-        boolean result = isSymmetry.isSymmetric1(root);
+        boolean result = isSymmetry.isSymmetric(root);
 
         assertFalse(result);
     }
@@ -43,7 +43,7 @@ class IsSymmetryTest {
         IsSymmetry isSymmetry = new IsSymmetry();
         TreeNode root = new TreeNode(1);
 
-        boolean result = isSymmetry.isSymmetric1(root);
+        boolean result = isSymmetry.isSymmetric(root);
 
         assertTrue(result);
     }
