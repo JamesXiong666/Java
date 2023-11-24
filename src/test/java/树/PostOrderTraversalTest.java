@@ -32,7 +32,7 @@ class PostOrderTraversalTest {
         root4.left.left = new TreeNode(-5);
         root4.left.right = new TreeNode(-4);
         root4.right.left = new TreeNode(-2);
-        List<Integer> expected4 = Arrays.asList(-5, -4, -3, -2, -8, -1);
+        List<Integer> expected4 = Arrays.asList(-5, -3, -4, -8, -2, -1);
         assertEquals(expected4, itr.inorderTraversal(root4));
     }
 

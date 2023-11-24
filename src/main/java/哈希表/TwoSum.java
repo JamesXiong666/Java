@@ -15,8 +15,7 @@ public class TwoSum {
         for (int i = 0; i < nums.length; i++) {
             //如果 map 中存在 target - nums[i] 则返回
             if (map.containsKey(target - nums[i])) {
-                res[0] = map.get(target - nums[i]);
-                res[1] = i;
+                res = new int[]{map.get(target - nums[i]), i};
                 return res;
             }
             //如果没有匹配到将 元素nums[i]和 下标i存入 map 中
