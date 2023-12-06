@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CanConstructTest {
     @Test
+    //修改
     public void testCanConstruct() {
         CanConstruct canConstruct = new CanConstruct();
 
