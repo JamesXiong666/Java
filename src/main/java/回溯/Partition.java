@@ -15,7 +15,7 @@ public class Partition {
     }
 
     private void backback(String s, int index) {
-        //如果其实位置大于 s 的大小,说明找到了一组分割方案
+        //如果其实位置大于等于s 的大小,说明找到了一组分割方案
         if ( index == s.length()){
             lists.add(new ArrayList<>(deque));
             return;
