@@ -1,6 +1,7 @@
 package Reflection;
 
 import java.lang.reflect.Method;
+import java.sql.SQLOutput;
 
 // 通过反射调用方法
 // clss.getMethod(方法名，形参列表)返回指定方法签名的方法
@@ -20,8 +21,16 @@ public class Test04 {
         Object len = length.invoke(s1);
         System.out.println(len);
 
+        //反射
+        Method equals = claxx.getMethod("equals", Object.class);
+        Object result =equals.invoke(s1, "hello"); // s1对象调用quals方法与Hello比
+        System.out.println(result);
 
-
+        // 反射静态方法
+        Method valueOf = claxx.getMethod("valueOf", int.class);
+        Object s2 = valueOf.invoke(null, 123);
+        System.out.println(s2);
+        System.out.println(s2 instanceof String);
     }
 
 }
