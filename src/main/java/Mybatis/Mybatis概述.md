@@ -79,7 +79,7 @@ SqlSession在方法内创建，使用完毕后关闭。
 * int 或 java.lang.Integer
 * hashmap 或 java.util.HashMap
 * list 或 java.util.List
-<select>、<insert>、<update>、<delete>都可以使用parameterType指定类型
+
 ### 一个参数
 Dao接口中方法的参数只有一个简单的类型，例如int、String、Integer、String等。
 在mapper文件中，使用#{param}获取参数的值，和方法的参数名无关。
@@ -145,4 +145,148 @@ mapper文件：
 ```
 
 ### #和$
-#：占位符
+占位符#，告诉mybatis使用实际的参数值代替，并使用PrepareStatement对象执行sql语句，#{...}代替sql语句的“？”
+这样做更安全，更迅速，通常也是首选做法。
+
+```
+mapper文件
+<select id="selectMutiParam" resultType="com.james.domain.Student">
+    select * from student where name = #name and age = #age
+<select>
+
+转化为MyBatis的执行是：
+String sql =  “select * from student where name = ? ”;
+PrepareStatement ps = conn.prepareStatement(sql);
+ps.setString(1, ’james‘);
+
+解释：
+where name=? 就是where name = #{name}
+ps.setString(1, ’james‘)，是ps.setString(1, #{name})
+```
+占位符$，告诉mybatis使用实际的参数值代替，并使用StringBuilder对象拼接sql语句，$代替sql语句的“？”
+
+### resultType
+resultType使用类型的完全限定名或别名，注意如果返回的是集合，那应该设置为集合包含的类型，而不是集合本身。
+resultType和resultMap不能同时使用。
+![img_2.png](img_2.png)
+
+#### 简单类型
+```
+接口方法：
+int countStudent();
+
+mapper文件：
+<select id="countStudent" resultType="int">
+    select count(*) from student
+</select>
+
+```
+
+#### 对象类型
+```
+接口方法：
+Student selectStudentById(int id);
+
+mapper文件：
+<select id="selectStudentById" resultType="com.james.domain.Student">
+    select * from student where id = #{id}
+</select>    
+```
+框架的处理：使用构造方法创建对象，调用setXXX给属性赋值
+![img_3.png](img_3.png)
+注意：Dao接口返回是结合类型，需要指定集合中的类型，不是集合本身
+![img_4.png](img_4.png)
+
+#### Map
+sql的查询结果作为Map的key和value，推荐使用Map<Object,Object>
+注意： Map作为接口返回值，sql语句的查询结果最多只能有一条记录，如果有多条记录，会报错。
+```
+接口方法：
+Map<Object,Object> selectStudentById(int id);
+
+mapper文件：
+<select id="selectStudentById" resultType="java.util.HashMap">
+    select * from student where id = #{id}
+</select>
+```
+
+### resultMap
+resultMap可以自定义sql的结果和java对象属性的映射关系，更灵活把列值赋值给指定属性。常用在列名和java对象属性名不一样的情况。
+
+使用方式：
+1. 先定义resultMap，指定列名和属性的对应关系。
+2. 在```<select>```中把resultType替换为resultMap。
+
+```
+接口方法：
+List<Student> selectUserResultMap(QueryParam param);
+
+mapper文件：
+<!-- 定义resultMap
+ id:自定义的唯一名称，在<select>中引用
+ type:期望转为的java对象的全限定名称或别名-->
+<resultMap id="userResultMap" type="com.james.domain.Student">
+    <!-- 定义列名和属性的对应关系>
+    <!-- 主键字段使用id-->
+    <id column="id" property="id"/>
+    <!-- 非主键字段使用result-->
+    <result column="name" property="name"/>
+    <result column="age" property="age"/>
+</resultMap>
+
+<!--resultMap: resultMap标签中的id属性值-->
+<select id="selectUseResultMap" resultMap="studentMap">
+    select id,name,email,age from student where name=#{queryName} or age=#{queryAge}
+</select>
+
+```
+### 实体类属性名和列名不同的处理方式
+#### 使用列别名和```<resultType>```
+1.创建新的实体类PrimaryStudent
+```
+public class PrimaryStudent {
+    private int stuId;
+    private String stuName;
+    private int stuAge;
+}
+```
+
+2.接口方法
+```
+List<PrimaryStudent> selectUseFieldAlias(QueryParam param);
+```
+
+3、mapper文件
+```
+<select id="selectUseFieldAlias" resultType="com.james.domain.PrimaryStudent">
+    select id as id, name as name, age as age from student where name = #{stuName} and age = #{StuAge}
+<select>
+```
+
+#### 使用<resultMap>
+1.接口方法
+```
+List<PrimaryStudent> selectUseDiffResultMap(QueryParam param);
+
+```
+2.mapper文件
+```
+<!-- 创建resultMap
+   id:自定义的唯一名称，在<select>使用
+   type:期望转为的java对象的全限定名称或别名
+-->
+<resultMap id="primaryStudentMap" type="com.bjpowernode.domain.PrimaryStudent">
+    <!-- 主键字段使用id -->
+    <id column="id" property="stuId" />
+    <!--非主键字段使用result-->
+    <result column="name" property="stuName"/>
+    <result column="age" property="stuAge" />
+</resultMap>
+
+<!--resultMap: resultMap标签中的id属性值-->
+<select id="selectUseDiffResultMap" resultMap="primaryStudentMap">
+    select id,name,email,age from student
+    where name=#{queryName} or age=#{queryAge}
+</select>
+```
+
